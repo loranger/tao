@@ -204,7 +204,7 @@ class Page extends Document
 
 		if(is_object($content))
 		{
-			switch(get_class($content))
+			switch(get_parent_class($content))
 			{
 				case 'Element':
 				case 'CodeImporter':
