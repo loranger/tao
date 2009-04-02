@@ -90,7 +90,7 @@ class PageHtml extends Page
 			$meta = self::$dom->createElement('meta');
 			$meta->setAttribute('http-equiv', 'Content-Type');
 			$meta->setAttribute('content', 'text/html; charset='.strtoupper($charset));
-			self::$head->appendChild($meta);
+			self::$head->getElement()->appendChild($meta);
 		}
 		
 		if($language)

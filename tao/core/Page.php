@@ -34,18 +34,10 @@ class Page extends Document
 	function __construct($name = 'xml', $charset = 'utf-8', $public_id = null, $doctype_uri = null, $namespace_uri = null)
 	{
 		parent::__construct($name, $charset, $public_id, $doctype_uri, $namespace_uri);
-		
-		self::$head = self::$dom->createElement('head');
-		self::$root->appendChild(self::$head);
-		/*
+
 		self::$head = new Element('head');
 		self::$root->appendChild(self::$head->getElement());
-		*/
 
-		/*
-		self::$body = self::$dom->createElement('body');
-		self::$root->appendChild(self::$body);
-		*/
 		self::$body = new Element('body');
 		self::$root->appendChild(self::$body->getElement());
 		
@@ -73,7 +65,8 @@ class Page extends Document
 			{
 			    $title = self::$dom->createElement('title');
 				$title->appendChild($text);
-				self::$head->appendChild($title);
+
+				self::$head->addContent($title);
 			}
 		}
 		return $this;
@@ -97,7 +90,8 @@ class Page extends Document
 		{
 			$base = self::$dom->createElement('base');
 			$base->setAttribute('href', $uri);
-			self::$head->appendChild($base);
+
+			self::$head->addContent($base);
 		}
 		
 		if($target)
@@ -122,20 +116,24 @@ class Page extends Document
 	 **/
 	function addMeta($name, $content, $type = 'name')
 	{
-		$metas = self::$head->getElementsByTagName('meta');
-		for ($i = 0; $i < $metas->length; $i++) {
-			$meta = $metas->item($i);
-			if($meta->hasAttribute($type) && $meta->getAttribute($type) == $name)
+		$metas = self::$head->find('meta');
+		if($metas)
+		{
+			foreach($metas as $meta)
 			{
-				$meta->setAttribute('content', $content);
-				return $this;
+				if($meta->hasAttribute($type) && $meta->getAttribute($type) == $name)
+				{
+					$meta->setAttribute('content', $content);
+					return $this;
+				}
 			}
 		}
 		
 		$meta = self::$dom->createElement('meta');
 		$meta->setAttribute($type, $name);
 		$meta->setAttribute('content', $content);
-		self::$head->appendChild($meta);
+
+		self::$head->addContent($meta);
 		return $this;
 	}
 	
@@ -187,7 +185,8 @@ class Page extends Document
 					$style->setAttribute('media', trim($media));
 				}
 				$style->appendChild($node);
-				self::$head->appendChild($style);
+
+				self::$head->addContent($style);
 			}
 		}
 		return $this;
