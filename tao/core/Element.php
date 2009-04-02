@@ -243,6 +243,22 @@ class UnitElement
 	{
 		if(!$this->iterate(__FUNCTION__, $content))
 		{
+			return $this->setContent($content, true);
+		}
+		return $this;
+	}
+	
+	/**
+	 * Set a content to the current element
+	 *
+	 * @return Element
+	 * @param mixed (string, array, Element or DOMElement) Exception will be thrown if Element cannot use the $content
+	 * @param boolean append content to current Element, or not
+	 **/
+	function setContent($content, $append = false)
+	{
+		if(!$this->iterate(__FUNCTION__, $content))
+		{
 			if(is_bool($content)){
 			    return;
 			}
@@ -265,10 +281,21 @@ class UnitElement
 			{
 			    $content = Document::$dom->createTextNode($content);
 			}
-
-			if( ! @$this->getElement()->appendChild($content) )
+			
+			try
 			{
-				throw new Exception('$content is <b>'.gettype($content).'</b>');
+				if($this->getElement()->hasChildNodes() && !$append)
+				{
+					$this->getElement()->replaceChild($content, $this->getElement()->firstChild);
+				}
+				else
+				{
+					$this->getElement()->appendChild($content);
+				}
+			}
+			catch (Exception $e)
+			{
+				throw $e;
 			}
 		}
 		return $this;
