@@ -37,17 +37,46 @@ class UnitElement
 	}
 
 	/**
+	 * Check if current Element is an Iterator and iterate
+	 *
+	 * @return mixed Elements or false
+	 **/
+	protected function iterate($method, $args = false)
+	{
+		if( is_a($this, 'Iterator') )
+		{
+			switch($method)
+			{
+				case '__toString':
+//					$fire = create_function('&$item, $key, $args', 'return call_user_func_array(array($item, "'.$method.'"), $args);');
+					$out = '';
+					foreach(iterator_to_array($this) as $element)
+					{
+						$out .= $element->__toString();
+					}
+					return $out;
+					break;
+				default:
+					$fire = create_function('&$item, $key, $args', 'call_user_func_array(array($item, "'.$method.'"), $args);');
+					break;
+			}
+			array_walk(iterator_to_array($this), $fire, $args);
+			return $this;
+		}
+		return false;
+	}
+	
+	/**
 	 * Check if current Element has its element node
 	 *
-	 * @return object $this
+	 * @return return $this
 	 **/
-	function checkElement()
+	protected function check()
 	{
 		if(!$this->element)
 		{
 			throw new Exception('Element is not valid or does not exists');
 		}
-		return $this;
 	}
 
 	/**
@@ -57,8 +86,27 @@ class UnitElement
 	 **/
 	function getElement()
 	{
-		$this->checkElement();
-		return $this->element;
+		if(!$this->iterate(__FUNCTION__))
+		{
+			return $this->element;
+		}
+		return $this;
+	}
+	
+	/**
+	 * Check if DOM exists and create it if needed
+	 *
+	 * @return object $this
+	 * @author Laurent Goussard
+	 * @param string 
+	 **/
+	protected function checkDOM()
+	{
+		if( !Document::$dom )
+		{
+			new Document();
+		}
+		return $this;
 	}
 
 	/**
@@ -69,10 +117,7 @@ class UnitElement
 	 **/
 	private function createFromTag($tag)
 	{
-		if( !Document::$dom )
-		{
-			new Document();
-		}
+		$this->checkDOM();
 		$this->element = Document::$dom->createElement($tag);
 		return $this;
 	}
@@ -100,24 +145,27 @@ class UnitElement
 	 **/
 	function setAttribute($name, $value, $delimiter = ' ', $trailing = false)
 	{
-		$this->checkElement();
-		if(is_array($value))
+		$args = func_get_args();
+
+		if(!$this->iterate(__FUNCTION__, $args))
 		{
-			$new_values = array();
-			foreach($value as $item)
+			if(is_array($value))
 			{
-				array_push($new_values, trim($item));
+				$new_values = array();
+				foreach($value as $item)
+				{
+					array_push($new_values, trim($item));
+				}
+
+				$value = implode($delimiter, array_unique($new_values));
+			}
+			if($trailing)
+			{
+				$value .= $delimiter;
 			}
 
-			$value = implode($delimiter, array_unique($new_values));
+			$this->element->setAttribute(trim($name), trim($value));
 		}
-		if($trailing)
-		{
-			$value .= $delimiter;
-		}
-		
-		$this->element->setAttribute(trim($name), trim($value));
-		
 		return $this;
 	}
 	
@@ -132,29 +180,33 @@ class UnitElement
 	 **/
 	function addAttribute($name, $value, $delimiter = ' ', $trailing = false)
 	{
-		$this->checkElement();
-		if($this->element->hasAttribute(trim($name)))
+		$args = func_get_args();
+		
+		if(!$this->iterate(__FUNCTION__, $args))
 		{
-			$current_value = explode($delimiter, $this->element->getAttribute(trim($name)));
-			foreach($current_value as $key=>$val)
+			if($this->element->hasAttribute(trim($name)))
 			{
-				if(trim($val) == '')
+				$current_value = explode($delimiter, $this->element->getAttribute(trim($name)));
+				foreach($current_value as $key=>$val)
 				{
-					unset($current_value[$key]);
+					if(trim($val) == '')
+					{
+						unset($current_value[$key]);
+					}
+				}
+				if(is_array($value))
+				{
+					$value = array_merge($current_value, $value);
+				}
+				else
+				{
+					array_push($current_value, trim($value));
+					$value = $current_value;
 				}
 			}
-			if(is_array($value))
-			{
-				$value = array_merge($current_value, $value);
-			}
-			else
-			{
-				array_push($current_value, trim($value));
-				$value = $current_value;
-			}
+
+			$this->setAttribute(trim($name), $value, $delimiter, $trailing);
 		}
-		
-		$this->setAttribute(trim($name), $value, $delimiter, $trailing);
 		return $this;
 	}
 
@@ -166,8 +218,10 @@ class UnitElement
 	 **/
 	function removeAttribute($name)
 	{
-		$this->checkElement();
-		$this->element->removeAttribute(trim($name));
+		if(!$this->iterate(__FUNCTION__, $name))
+		{
+			$this->element->removeAttribute(trim($name));
+		}
 		return $this;
 	}
 
@@ -179,43 +233,35 @@ class UnitElement
 	 **/
 	function addContent($content)
 	{
-		$this->checkElement();
-		if(is_bool($content)){
-		    return;
-		}
-		
-		if(is_object($content))
+		if(!$this->iterate(__FUNCTION__, $content))
 		{
-			switch(get_parent_class($content))
-			{
-				case 'Element':
-				case 'CodeImporter':
-					$content = $content->getElement();
-					break;
-				case 'DOMElement':
-				case 'DOMNode':
-				default:
-					break;
+			if(is_bool($content)){
+			    return;
 			}
-		}
 
-		if(is_array($content))
-		{
-			foreach($content as $iter)
+			if(is_object($content) && is_a($content, 'Element'))
 			{
-				$this->element->addContent($iter);
+				$content = $content->getElement();
 			}
-			return $this;
-		}
 
-		if(is_string($content) || is_double($content) || is_integer($content))
-		{
-		    $content = Document::$dom->createTextNode($content);
-		}
+			if(is_array($content))
+			{
+				foreach($content as $iter)
+				{
+					$this->addContent($iter);
+				}
+				return $this;
+			}
 
-		if( ! @$this->element->appendChild($content) )
-		{
-			throw new Exception('$content is <b>'.gettype($content).'</b>');
+			if(is_string($content) || is_double($content) || is_integer($content))
+			{
+			    $content = Document::$dom->createTextNode($content);
+			}
+
+			if( ! @$this->element->appendChild($content) )
+			{
+				throw new Exception('$content is <b>'.gettype($content).'</b>');
+			}
 		}
 		return $this;
 	}
@@ -228,7 +274,10 @@ class UnitElement
 	 **/
 	function addTo($element)
 	{
-		$element->addContent($this);
+		if(!$this->iterate(__FUNCTION__, $element))
+		{
+			$element->addContent($this);
+		}
 		return $this;
 	}
 	
@@ -250,8 +299,7 @@ class UnitElement
 	 **/
 	function __toString()
 	{
-		$this->checkElement();
-		return Document::$dom->saveXML($this->element);
+		return (!$this->iterate(__FUNCTION__)) ? Document::$dom->saveXML($this->element) : '';
 	}
 	
 	/**
@@ -261,12 +309,14 @@ class UnitElement
 	 **/
 	function remove()
 	{
-		$this->checkElement();
-		if($this->element->parentNode)
+		if(!$this->iterate(__FUNCTION__))
 		{
-			$this->element->parentNode->removeChild($this->element);
+			if($this->element->parentNode)
+			{
+				$this->element->parentNode->removeChild($this->element);
+			}
+			$this->element = null;
 		}
-		$this->element = null;
 		return null;
 	}
 
@@ -504,4 +554,52 @@ class Element extends UnitElement
 
 }
 
+
+/**
+ * Elements Iterator
+ * Enable Element iterations
+ *
+ * @package tao
+ * @author loranger
+ **/
+class Elements extends Element implements Iterator
+{
+	private $key = 0;
+	private $array = array();
+	
+	function __construct($array)
+	{
+		$this->array = $array;
+	}
+	
+	function current()
+	{
+		return $this->array[$this->key];
+	}
+	
+	function key()
+	{
+		return $this->key;
+	}
+	
+	function next()
+	{
+		++$this->key;
+	}
+	
+	function rewind()
+	{
+		$this->key = 0;
+	}
+	
+	function valid()
+	{
+		return isset($this->array[$this->key]);
+	}
+	
+	function count()
+	{
+		return count($this->array);
+	}
+}
 ?>

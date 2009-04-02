@@ -102,7 +102,7 @@ class Document
 		
 		if(count($list)>1)
 		{
-			return $list;
+			return new Elements($list);
 		}
 		elseif(count($list) == 1)
 		{

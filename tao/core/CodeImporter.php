@@ -24,6 +24,7 @@ class CodeImporter extends Element
 	 **/
 	function __construct($code)
 	{
+		$this->checkDOM();
 		$this->fragment = Document::$dom->createDocumentFragment();
 		$this->fragment->appendXML( html_entity_decode($code, ENT_COMPAT, Document::$charset) );
 		parent::__construct($this->fragment);

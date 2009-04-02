@@ -202,19 +202,9 @@ class Page extends Document
 	function addContent($content)
 	{
 
-		if(is_object($content))
+		if(is_object($content) && is_a($content, 'Element'))
 		{
-			switch(get_parent_class($content))
-			{
-				case 'Element':
-				case 'CodeImporter':
-					$content = $content->getElement();
-					break;
-				case 'DOMElement':
-				case 'DOMENode':
-				default:
-					break;
-			}
+			$content = $content->getElement();
 		}
 		
 		if(is_array($content))

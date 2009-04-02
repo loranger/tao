@@ -44,10 +44,7 @@ $bold = tao('<strong id="import">empty</strong>');
 $bold->addContent(" or not empty...");
 Page()->addContent($bold);
 
-foreach(Page()->find('a') as $element)
-{
-	$element->addStyle('font-size: 1.5em; color: #856b51');
-}
+Page()->find('a')->addStyle('font-size: 1.5em; color: #856b51');
 
 tao('#import')->setStyle('display: block');
 

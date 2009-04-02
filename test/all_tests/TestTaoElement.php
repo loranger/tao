@@ -9,9 +9,39 @@ class TestTaoElement extends UnitDocumentTestCase {
 		//$this->UnitTestCase('Adding elements using tao');
 	}
 	
+	function testSingleNewTaoElement()
+	{
+		$this->document = null;
+		$tao = new tao('b');
+		$tao->addContent('Bla ');
+			
+		ob_start();
+		echo $tao;
+		$this->output = trim(ob_get_contents());
+		ob_end_clean();
+
+		$this->assertNbLinesEqual(1);
+		$this->assertWantedPattern('/<b>Bla <\/b>/', $this->output, 'Single tag found');
+	}
+	
+	function testSingleNewTaoTagElement()
+	{
+		$this->document = null;
+		$tao = new tao('<b />');
+		$tao->addContent('Bla ');
+			
+		ob_start();
+		echo $tao;
+		$this->output = trim(ob_get_contents());
+		ob_end_clean();
+
+		$this->assertNbLinesEqual(1);
+		$this->assertWantedPattern('/<b>Bla <\/b>/', $this->output, 'Single tag found');
+	}
+	
 	function testSingleTaoElement()
 	{
-		
+		$this->document = null;
 		$tao = tao('<b />')
 				->addContent('Bla ')
 				->addContent( 
@@ -23,7 +53,6 @@ class TestTaoElement extends UnitDocumentTestCase {
 		echo $tao;
 		$this->output = trim(ob_get_contents());
 		ob_end_clean();
-
 		$this->assertNbLinesEqual(1);
 		$this->assertWantedPattern('/<b>Bla <em>emphase<\/em> blabla<\/b>/', $this->output, 'Single tag found');
 	}

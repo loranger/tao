@@ -18,6 +18,7 @@
 	require_once(TAO_PATH.'core/pages/PageXhtml.php');
 
 	require_once(TAO_PATH.'core/Functions.php');
+	require_once(TAO_PATH.'core/Tao.php');
 	
 	// Enable or disable autoload feature
 	TaoSettings()->useAutoload(true);
