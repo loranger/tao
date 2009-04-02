@@ -121,6 +121,28 @@ class UnitElement
 	}
 	
 	/**
+	 * Check if current element has attribute
+	 *
+	 * @return boolean
+	 * @param string $name of the attribute
+	 **/
+	function hasAttribute($name)
+	{
+		return $this->getElement()->hasAttribute($name);
+	}
+	
+	/**
+	 * Return the attribute value of the current Element
+	 *
+	 * @return string
+	 * @param string $name of the attribute
+	 **/
+	function getAttribute($name)
+	{
+		return $this->getElement()->getAttribute($name);
+	}
+	
+	/**
 	 * Define an attribute to the current element
 	 *
 	 * @return object $this
@@ -150,7 +172,7 @@ class UnitElement
 				$value .= $delimiter;
 			}
 
-			$this->element->setAttribute(trim($name), trim($value));
+			$this->getElement()->setAttribute(trim($name), trim($value));
 		}
 		return $this;
 	}
@@ -170,9 +192,9 @@ class UnitElement
 		
 		if(!$this->iterate(__FUNCTION__, $args))
 		{
-			if($this->element->hasAttribute(trim($name)))
+			if($this->getElement()->hasAttribute(trim($name)))
 			{
-				$current_value = explode($delimiter, $this->element->getAttribute(trim($name)));
+				$current_value = explode($delimiter, $this->getElement()->getAttribute(trim($name)));
 				foreach($current_value as $key=>$val)
 				{
 					if(trim($val) == '')
@@ -206,7 +228,7 @@ class UnitElement
 	{
 		if(!$this->iterate(__FUNCTION__, $name))
 		{
-			$this->element->removeAttribute(trim($name));
+			$this->getElement()->removeAttribute(trim($name));
 		}
 		return $this;
 	}
@@ -244,7 +266,7 @@ class UnitElement
 			    $content = Document::$dom->createTextNode($content);
 			}
 
-			if( ! @$this->element->appendChild($content) )
+			if( ! @$this->getElement()->appendChild($content) )
 			{
 				throw new Exception('$content is <b>'.gettype($content).'</b>');
 			}
@@ -275,7 +297,7 @@ class UnitElement
 	 **/
 	function find($expression)
 	{
-		return Document::find($expression, $this->element);
+		return Document::find($expression, $this->getElement());
 	}
 	
 	/**
@@ -285,7 +307,7 @@ class UnitElement
 	 **/
 	function __toString()
 	{
-		return (!$this->iterate(__FUNCTION__)) ? Document::$dom->saveXML($this->element) : '';
+		return (!$this->iterate(__FUNCTION__)) ? Document::$dom->saveXML($this->getElement()) : '';
 	}
 	
 	/**
@@ -297,9 +319,9 @@ class UnitElement
 	{
 		if(!$this->iterate(__FUNCTION__))
 		{
-			if($this->element->parentNode)
+			if($this->getElement()->parentNode)
 			{
-				$this->element->parentNode->removeChild($this->element);
+				$this->getElement()->parentNode->removeChild($this->getElement());
 			}
 			$this->element = null;
 		}
@@ -421,9 +443,9 @@ class Element extends UnitElement
 	 **/
 	function removeClass($classname)
 	{
-		if($this->element->hasAttribute('class'))
+		if($this->getElement()->hasAttribute('class'))
 		{
-			$current_value = explode($this->classDelimiter, $this->element->getAttribute('class'));
+			$current_value = explode($this->classDelimiter, $this->getElement()->getAttribute('class'));
 			foreach($current_value as $key=>$current_name)
 			{
 				if(trim($classname) == trim($current_name))
@@ -517,9 +539,9 @@ class Element extends UnitElement
 	 **/
 	function removeStyle($style_name)
 	{
-		if($this->element->hasAttribute('style'))
+		if($this->getElement()->hasAttribute('style'))
 		{
-			$current_value = explode($this->stylesDelimiter, $this->element->getAttribute('style'));
+			$current_value = explode($this->stylesDelimiter, $this->getElement()->getAttribute('style'));
 			foreach($current_value as $key=>$current_name)
 			{
 				$style = explode(':', $current_name);
