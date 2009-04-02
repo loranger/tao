@@ -45,21 +45,7 @@ class UnitElement
 	{
 		if( is_a($this, 'Iterator') )
 		{
-			switch($method)
-			{
-				case '__toString':
-//					$fire = create_function('&$item, $key, $args', 'return call_user_func_array(array($item, "'.$method.'"), $args);');
-					$out = '';
-					foreach(iterator_to_array($this) as $element)
-					{
-						$out .= $element->__toString();
-					}
-					return $out;
-					break;
-				default:
-					$fire = create_function('&$item, $key, $args', 'call_user_func_array(array($item, "'.$method.'"), $args);');
-					break;
-			}
+			$fire = create_function('&$item, $key, $args', 'call_user_func_array(array($item, "'.$method.'"), $args);');
 			array_walk(iterator_to_array($this), $fire, $args);
 			return $this;
 		}
@@ -600,6 +586,16 @@ class Elements extends Element implements Iterator
 	function count()
 	{
 		return count($this->array);
+	}
+	
+	function __toString()
+	{
+		$out = '';
+		foreach(iterator_to_array($this) as $element)
+		{
+			$out .= $element->__toString();
+		}
+		return $out;
 	}
 }
 ?>
