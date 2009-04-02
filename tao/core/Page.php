@@ -54,20 +54,13 @@ class Page extends Document
 	{
 		if($titleText && !empty($titleText))
 		{
-			$text = self::$dom->createTextNode($titleText);
-			
-			$title = self::$root->getElementsByTagName('title')->item(0);
-			if($title)
+			$title = self::$head->find('title');
+			if(!$title)
 			{
-				$title->replaceChild($text, $title->firstChild);
+				$title = new Element('title');
 			}
-			else
-			{
-			    $title = self::$dom->createElement('title');
-				$title->appendChild($text);
-
-				self::$head->addContent($title);
-			}
+			$title->setContent($titleText);
+			self::$head->addContent($title);
 		}
 		return $this;
 	}
@@ -81,18 +74,14 @@ class Page extends Document
 	 **/
 	function setBase($uri, $target = false)
 	{
-		$base = self::$root->getElementsByTagName('base')->item(0);
-		if($base)
+		$base = self::$head->find('base');
+		if(!$base)
 		{
-			$base->setAttribute('href', $uri);
+			$base = new Element('base');
 		}
-		else
-		{
-			$base = self::$dom->createElement('base');
-			$base->setAttribute('href', $uri);
-
-			self::$head->addContent($base);
-		}
+		$base->setAttribute('href', $uri);
+		
+		self::$head->addContent($base);
 		
 		if($target)
 		{
@@ -208,9 +197,9 @@ class Page extends Document
 		
 		if(is_array($content))
 		{
-			foreach($content as $iter)
+			foreach($content as $item)
 			{
-				$this->addContent($iter);
+				$this->addContent($item);
 			}
 			return $this;
 		}
@@ -220,9 +209,13 @@ class Page extends Document
 			$content = self::$dom->createTextNode($content);
 		}
 
-		if(! @self::$body->addContent($content))
+		try
 		{
-			throw new Exception('$content is <b>'.gettype($content).'</b>');
+			self::$body->addContent($content);
+		}
+		catch (Exception $e)
+		{
+			throw $e;
 		}
 
 		return $this;
