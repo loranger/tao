@@ -237,7 +237,7 @@ class UnitElement
 	 * Add a content to the current element
 	 *
 	 * @return Element
-	 * @param mixed (string, array, Element or DOMElement) Exception will be thrown if Element cannot use the $content
+	 * @param mixed (string, array, Elements, Element or DOMElement) Exception will be thrown if Element cannot use the $content
 	 **/
 	function addContent($content)
 	{
@@ -248,7 +248,7 @@ class UnitElement
 	 * Set a content to the current element
 	 *
 	 * @return Element
-	 * @param mixed (string, array, Element or DOMElement) Exception will be thrown if Element cannot use the $content
+	 * @param mixed (string, array, Elements, Element or DOMElement) Exception will be thrown if Element cannot use the $content
 	 * @param boolean append content to current Element, or not
 	 **/
 	function setContent($content, $append = false)

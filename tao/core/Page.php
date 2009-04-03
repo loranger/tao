@@ -6,7 +6,6 @@
  * @package tao
  * @author loranger
  * @todo Implements frameset page methods
- * @todo Passer head en Element
  **/
 class Page extends Document
 {
@@ -58,9 +57,9 @@ class Page extends Document
 			if(!$title)
 			{
 				$title = new Element('title');
+				self::$head->addContent($title);
 			}
 			$title->setContent($titleText);
-			self::$head->addContent($title);
 		}
 		return $this;
 	}
@@ -78,10 +77,9 @@ class Page extends Document
 		if(!$base)
 		{
 			$base = new Element('base');
+			self::$head->addContent($base);
 		}
 		$base->setAttribute('href', $uri);
-		
-		self::$head->addContent($base);
 		
 		if($target)
 		{
@@ -105,24 +103,14 @@ class Page extends Document
 	 **/
 	function addMeta($name, $content, $type = 'name')
 	{
-		$metas = self::$head->find('meta');
-		if($metas)
+		$meta = self::$head->find('meta['.$type.'="'.$name.'"]');
+		if(!$meta)
 		{
-			foreach($metas as $meta)
-			{
-				if($meta->hasAttribute($type) && $meta->getAttribute($type) == $name)
-				{
-					$meta->setAttribute('content', $content);
-					return $this;
-				}
-			}
+			$meta = new Element('meta');
+			$meta->setAttribute($type, $name);
+			self::$head->addContent($meta);
 		}
-		
-		$meta = self::$dom->createElement('meta');
-		$meta->setAttribute($type, $name);
 		$meta->setAttribute('content', $content);
-
-		self::$head->addContent($meta);
 		return $this;
 	}
 	
@@ -150,6 +138,19 @@ class Page extends Document
 	{
 		if($string && !empty($string))
 		{
+			/*
+			$style = self::$head->find('style[media="'.$media.'"]');
+			if(!$meta)
+			{
+				$meta = new Element('meta');
+				$meta->setAttribute($type, $name);
+				self::$head->addContent($meta);
+			}
+			$meta->setAttribute('content', $content);
+			return $this;
+			*/
+			
+			/**/
 			$node = self::$dom->createTextNode( "\n".trim($string)."\n" );
 			
 			$existing = self::$root->getElementsByTagName('style');
@@ -177,6 +178,7 @@ class Page extends Document
 
 				self::$head->addContent($style);
 			}
+			/**/
 		}
 		return $this;
 	}
@@ -185,14 +187,21 @@ class Page extends Document
 	 * Add a content to the current Page
 	 *
 	 * @return Page
-	 * @param mixed (string, array, Element or DOMElement) Exception will be thrown if Page cannot use the $content
+	 * @param mixed (string, array, Elements, Element or DOMElement) Exception will be thrown if Page cannot use the $content
 	 **/	
 	function addContent($content)
 	{
-
-		if(is_object($content) && is_a($content, 'Element'))
+		
+		if(is_object($content))
 		{
-			$content = $content->getElement();
+			if(is_a($content, 'Element'))
+			{
+				$content = $content->getElement();
+			}
+			if(is_a($content, 'Elements'))
+			{
+				$content = iterator_to_array($content);
+			}
 		}
 		
 		if(is_array($content))

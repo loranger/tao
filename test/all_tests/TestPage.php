@@ -59,8 +59,31 @@ class TestPage extends UnitDocumentTestCase {
 									$this->getOutput(),
 									'body node found');
 	}
+	
+	function testTitle()
+	{
+		$this->document = new Page('html', 'utf-8', 'html');
+		
+		$this->document->setTitle('Dummy title');
+		$this->document->setTitle('Real title');
+		
+		$this->assertNoErrors('Empty dummy Page created');
+		$this->assertWantedPattern('/<title>Real title<\/title>/', $this->getOutput(), 'correct title node found');
+	}
+	
+	function testMeta()
+	{
+		$this->document = new Page('html', 'utf-8', 'html');
+		
+		$this->document->addMeta('indentifier-url', 'http://www.site.com');
+		$this->document->addMeta('keywords', 'asp');
+		$this->document->addMeta('keywords', 'java, html, unix, linux, php, mysql, php4');		
+		$this->assertNoErrors('Meta dummy Page created');
+		$this->assertWantedPattern('/<meta name="indentifier-url" content="http:\/\/www.site.com"\/>/', $this->getOutput(), 'correct meta node found');
+		$this->assertWantedPattern('/<meta name="keywords" content="java, html, unix, linux, php, mysql, php4"\/>/', $this->getOutput(), 'correct meta node found');
+		$this->assertNoUnWantedPattern('/<meta name="keywords" content="asp"\/>/', $this->getOutput(), 'incorrect meta node not found');
+	}
 
 }
-
 
 ?>

@@ -100,6 +100,14 @@ class Document
 			$list[] = new Element($entry);
 		}
 		
+		/*
+		// Baaaaaaad performance
+		if(count($list))
+		{
+			return new Elements($list);
+		}
+		/**/
+		
 		if(count($list)>1)
 		{
 			return new Elements($list);
