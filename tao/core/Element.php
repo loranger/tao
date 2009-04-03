@@ -16,7 +16,7 @@ class UnitElement
 	 * @var DOMElement
 	 **/
 	protected $element = false;
-	
+		
 	/**
 	 * Element constructor
 	 *
@@ -45,8 +45,8 @@ class UnitElement
 	{
 		if( is_a($this, 'Iterator') )
 		{
-			$fire = create_function('&$item, $key, $args', 'call_user_func_array(array($item, "'.$method.'"), $args);');
-			array_walk(iterator_to_array($this), $fire, $args);
+			$pack = array('method'=>$method, 'args'=>$args);
+			array_walk(iterator_to_array($this), 'iterate', $pack);
 			return $this;
 		}
 		return false;
@@ -241,11 +241,7 @@ class UnitElement
 	 **/
 	function addContent($content)
 	{
-		if(!$this->iterate(__FUNCTION__, $content))
-		{
-			return $this->setContent($content, true);
-		}
-		return $this;
+		return $this->setContent($content, true);
 	}
 	
 	/**
@@ -257,15 +253,23 @@ class UnitElement
 	 **/
 	function setContent($content, $append = false)
 	{
-		if(!$this->iterate(__FUNCTION__, $content))
+		$args = func_get_args();
+		if(!$this->iterate(__FUNCTION__, $args))
 		{
 			if(is_bool($content)){
 			    return;
 			}
 
-			if(is_object($content) && is_a($content, 'Element'))
+			if(is_object($content))
 			{
-				$content = $content->getElement();
+				if(is_a($content, 'Element'))
+				{
+					$content = $content->getElement();
+				}
+				if(is_a($content, 'Elements'))
+				{
+					$content = iterator_to_array($content);
+				}
 			}
 
 			if(is_array($content))
@@ -589,7 +593,6 @@ class Element extends UnitElement
 
 }
 
-
 /**
  * Elements Iterator
  * Enable Element iterations
@@ -647,4 +650,5 @@ class Elements extends Element implements Iterator
 		return $out;
 	}
 }
+
 ?>
