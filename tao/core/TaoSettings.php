@@ -59,35 +59,51 @@ class TaoSettings
 	 **/
 	function useAutoload($boolean = false)
 	{
-		if( is_bool($boolean) && $boolean && !function_exists('__autoload') )
+		if( is_bool($boolean) && $boolean )
 		{
-			function __autoload($object)
+			$this->autoload = true;
+			spl_autoload_register(array($this, 'autoload'));
+		}
+		else
+		{
+			if($this->autoload == true)
 			{
-				if(!class_exists($object))
+				spl_autoload_unregister(array($this, 'autoload'));
+			}
+			$this->autoload = false;
+		}
+	}
+	
+	/**
+	 * Autoload handler
+	 *
+	 * @param Class
+	 **/
+	function autoload($object)
+	{
+		if(!class_exists($object))
+		{
+			$exists = false;
+
+			foreach(TaoSettings()->get('autoloadpath') as $path)
+			{
+				if($exists = !class_exists($object) && file_exists($class = $path . $object . '.php'))
 				{
-					$exists = false;
-
-					foreach(TaoSettings()->get('autoloadpath') as $path)
-					{
-						if($exists = !class_exists($object) && file_exists($class = $path . $object . '.php'))
-						{
-					        require_once($class);
-							break;
-						}
-					}
-
-				    if(!$exists)
-					{
-				        eval('class '.$object.' extends Exception {}');
-
-						$msg = sprintf(_('The <strong>%s</strong> class doesn\'t exists'), $object)."<br />\n";
-						$msg .= _('Tested paths :')."<br />\n";
-						$msg .= implode("<br />\n", TaoSettings()->get('autoloadpath'));
-
-						throw new $object($msg);
-				    }
+			        require_once($class);
+					break;
 				}
 			}
+
+		    if(!$exists)
+			{
+		        eval('class '.$object.' extends Exception {}');
+
+				$msg = sprintf(_('The <strong>%s</strong> class doesn\'t exists'), $object)."<br />\n";
+				$msg .= _('Tested paths :')."<br />\n";
+				$msg .= implode("<br />\n", TaoSettings()->get('autoloadpath'));
+
+				throw new $object($msg);
+		    }
 		}
 	}
 	
