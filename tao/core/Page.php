@@ -138,47 +138,19 @@ class Page extends Document
 	{
 		if($string && !empty($string))
 		{
-			/*
-			$style = self::$head->find('style[media="'.$media.'"]');
-			if(!$meta)
+			$style = ($media) ? self::$head->find('style[media="'.$media.'"]') : self::$head->find('style[not(@media)]');
+			if(!$style)
 			{
-				$meta = new Element('meta');
-				$meta->setAttribute($type, $name);
-				self::$head->addContent($meta);
-			}
-			$meta->setAttribute('content', $content);
-			return $this;
-			*/
-			
-			/**/
-			$node = self::$dom->createTextNode( "\n".trim($string)."\n" );
-			
-			$existing = self::$root->getElementsByTagName('style');
-			if($existing->length)
-			{
-				foreach($existing as $style)
-				{
-					if( (!$media && !$style->hasAttribute('media')) || ($media && $style->getAttribute('media') == trim($media)) )
-					{
-						$style->appendChild($node);
-						$node = null;
-					}
-				}
-			}
-			
-			if($node)
-			{
-				$style = self::$dom->createElement('style');
+				$style = new Element('style');
 				$style->setAttribute('type', 'text/css');
 				if($media)
 				{
 					$style->setAttribute('media', trim($media));
 				}
-				$style->appendChild($node);
-
 				self::$head->addContent($style);
 			}
-			/**/
+			$style->addContent( "\n".trim($string)."\n" );
+			return $this;
 		}
 		return $this;
 	}
