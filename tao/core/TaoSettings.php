@@ -14,48 +14,61 @@ class TaoSettings
 	 * @var boolean
 	 **/
 	private $autoload = false;
-	
+
 	/**
 	 * Autoload pathes to lookup
 	 *
 	 * @var array
 	 **/
 	private $autoloadpath = array('core/', 'pages/');
-	
+
 	/**
 	 * Overriding featuring name
 	 *
 	 * @var string
 	 **/
 	private $featuring = false;
-	
+
 	/**
 	 * Default locale
 	 *
 	 * @var string
 	 **/
 	private $defaultLocale = 'en_EN';
-	
+
 	/**
 	 * Locale path
 	 *
 	 * @var string
 	 **/
 	private $localePath = 'i18n/';
-	
+
 	function __construct()
 	{
 		foreach($this->autoloadpath as &$path)
 		{
 			$path = TAO_PATH.$path;
 		}
+
+		// TODO : Patch in a clever and universal way (ngettext, dgettext, dcgettext, etc...)
+		if( !function_exists('gettext') )
+		{
+			function _($string)
+			{
+				return $string;
+			}
+			function gettext($string)
+			{
+				return $string;
+			}
+		}
 	}
-	
+
 	/**
 	 * Enable or disable autoload
 	 *
 	 * @return void
-	 * @param boolean 
+	 * @param boolean
 	 **/
 	function useAutoload($boolean = false)
 	{
@@ -73,7 +86,7 @@ class TaoSettings
 			$this->autoload = false;
 		}
 	}
-	
+
 	/**
 	 * Autoload handler
 	 *
@@ -106,7 +119,7 @@ class TaoSettings
 		    }
 		}
 	}
-	
+
 	/**
 	 * Add a path for autoload to lookup
 	 *
@@ -120,7 +133,7 @@ class TaoSettings
 			array_push($this->autoloadpath, trim($path));
 		}
 	}
-	
+
 	/**
 	 * Define the featuring layer
 	 *
@@ -131,7 +144,7 @@ class TaoSettings
 	{
 		$this->featuring = $featuring;
 	}
-	
+
 	/**
 	 * Define the default locale
 	 *
@@ -142,7 +155,7 @@ class TaoSettings
 	{
 		$this->defaultLocale = $locale;
 	}
-	
+
 	/**
 	 * Define the gettext path
 	 *
@@ -153,7 +166,7 @@ class TaoSettings
 	{
 		$this->localePath = $path;
 	}
-	
+
 	/**
 	 * Get the conf value if exists
 	 *

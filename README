@@ -1,10 +1,10 @@
 
 
-		__ __|                \            _ \  |    _)           |  
+		__ __|                \            _ \  |    _)           |
 		   |  _` |  _` |     _ \    __|   |   | __ \  |  _ \  __| __|
-		   | (   | (   |    ___ \ \__ \   |   | |   | |  __/ (    |  
+		   | (   | (   |    ___ \ \__ \   |   | |   | |  __/ (    |
 		  _|\__,_|\__, |  _/    _\____/  \___/ _.__/  |\___|\___|\__|
-		          |___/                           ___/               
+		          |___/                           ___/
 
 
 					is a PHP5 wrapper for DOMImplementation
@@ -15,6 +15,7 @@ REQUIREMENTS :
 	✓	PHP5+
 		✓	DOM Extension
 		✓	SPL Extension
+		✓	Gettext Extension
 
 COPYING :
 
@@ -39,7 +40,7 @@ COPYING :
 	DEALINGS IN THE SOFTWARE.
 
 CHANGELOG :
-	
+
 	Nothing here until official release
 
 
