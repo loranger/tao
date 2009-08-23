@@ -23,7 +23,7 @@
 	// Enable or disable autoload feature
 	TaoSettings()->useAutoload(true);
 	
-	// This is useless if you did disable autoload
+	// Used only if autoload is enable
 	TaoSettings()->addAutoloadPath(TAO_PATH.'extend/pages/');
 	TaoSettings()->addAutoloadPath(TAO_PATH.'extend/elements/');
 	TaoSettings()->addAutoloadPath(TAO_PATH.'extend/featuring/');

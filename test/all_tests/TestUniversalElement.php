@@ -32,7 +32,9 @@ class TestUniversalElement extends UnitDocumentTestCase {
 		//$this->assertWantedPattern('/xml:lang="en"/', $this->getOutput(), 'correct xml:lang attribute found');
 		$this->assertWantedPattern('/title="My &quot;title&quot;"/', $this->getOutput(), 'correct title attribute found');
 		$this->assertWantedPattern('/class="simple"/', $this->getOutput(), 'correct class attribute found');
-		$this->assertWantedPattern('/style="border: 1px solid red;"/', $this->getOutput(), 'correct style attribute found');	}
+		$this->assertWantedPattern('/style="border: 1px solid red;"/', $this->getOutput(), 'correct style attribute found');	
+	}
+	
 }
 
 ?>

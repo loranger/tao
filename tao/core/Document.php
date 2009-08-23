@@ -2,41 +2,41 @@
 
 /**
  * Dom abstract layer
- * 
+ *
  * @package tao
  * @author loranger
  **/
 class Document
 {
-	
+
 	/**
 	 * Current DOM instance
 	 *
 	 * @var object
 	 **/
 	static $dom = false;
-	
+
 	/**
 	 * Root DOM Element
 	 *
 	 * @var string
 	 **/
 	static $root = false;
-	
+
 	/**
 	 * Current document system name
 	 *
 	 * @var string
 	 **/
 	static $systemName;
-	
+
 	/**
 	 * Current charset
 	 *
 	 * @var string
 	 **/
 	static $charset;
-	
+
 	/**
 	 * Document constructor
 	 *
@@ -59,9 +59,9 @@ class Document
 
 		self::$systemName = strtolower($name);
 		self::$charset = strtolower($charset);
-		
+
 		$domImplementation = new DOMImplementation;
-	
+
 		$dtd = $domImplementation->createDocumentType(strtoupper(self::$systemName), $public_id, $doctype_uri);
 
 		self::$dom = $domImplementation->createDocument($namespace_uri, self::$systemName, $dtd);
@@ -69,12 +69,12 @@ class Document
 		self::$dom->preserveWhiteSpace = false;
 		self::$dom->formatOutput = true;
 		self::$dom->validateOnParse = true;
-		
+
 		self::$root = self::$dom->getElementsByTagName($name)->item(0);
 
 		return $this;
 	}
-	
+
 	/**
 	 * Find an element based on a css expression
 	 *
@@ -87,19 +87,19 @@ class Document
 	{
 		$context = ($context) ? $context : self::$root;
 		$xpath = new DOMXPath(self::$dom);
-		if(!ereg('/', $expression))
+		if(!preg_match('/\//', $expression))
 		{
 			$sel = new Selector($expression);
 			$expression = $sel->toXpath();
 		}
 		$entries = $xpath->query($expression, $context);
-		
+
 		$list = array();
 		foreach($entries as $entry)
 		{
 			$list[] = new Element($entry);
 		}
-		
+
 		/*
 		// Baaaaaaad performance
 		if(count($list))
@@ -107,7 +107,7 @@ class Document
 			return new Elements($list);
 		}
 		/**/
-		
+
 		if(count($list)>1)
 		{
 			return new Elements($list);
@@ -118,7 +118,7 @@ class Document
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Convert current Document to string
 	 *
@@ -140,11 +140,11 @@ class Document
 			else
 			{
 				return self::$dom->saveXML();
-			}			
+			}
 		}
 
 	}
-	
+
 	/**
 	 * Document destructor
 	 **/
@@ -152,7 +152,7 @@ class Document
 	{
 		// Only Page renders document
 	}
-	
+
 }
 
 ?>
