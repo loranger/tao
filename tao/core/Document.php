@@ -124,7 +124,7 @@ class Document
 	 *
 	 * @return string
 	 **/
-	private function __toString()
+	public function __toString()
 	{
 		if(isset($this->rendered))
 		{
