@@ -62,7 +62,7 @@ class Document
 
 		$domImplementation = new DOMImplementation;
 
-		$dtd = $domImplementation->createDocumentType(strtoupper(self::$systemName), $public_id, $doctype_uri);
+		$dtd = $domImplementation->createDocumentType(strtolower(self::$systemName), $public_id, $doctype_uri);
 
 		self::$dom = $domImplementation->createDocument($namespace_uri, self::$systemName, $dtd);
 		self::$dom->encoding = strtoupper(self::$charset);
