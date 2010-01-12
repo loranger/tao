@@ -50,7 +50,7 @@ class TaoSettings
 			$path = TAO_PATH.$path;
 		}
 
-		// TODO : Patch in a clever and universal way (ngettext, dgettext, dcgettext, etc...)
+		// TODO : Patch in a clever and universal way (sprintf, ngettext, dgettext, dcgettext, etc...)
 		if( !function_exists('gettext') )
 		{
 			function _($string)
@@ -128,7 +128,15 @@ class TaoSettings
 	 **/
 	function addAutoloadPath($path)
 	{
-		if(!in_array(trim($path), $this->autoloadpath))
+		if(!$this->autoload)
+		{
+			$this->useAutoload(true);
+		}
+		if( preg_match('/\*/', $path))
+		{
+			array_walk(glob($path, GLOB_BRACE), array($this, 'addAutoloadPath'));
+		}
+		else if (!in_array(trim($path), $this->autoloadpath))
 		{
 			array_push($this->autoloadpath, trim($path));
 		}
