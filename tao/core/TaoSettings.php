@@ -20,7 +20,7 @@ class TaoSettings
 	 *
 	 * @var array
 	 **/
-	private $autoloadpath = array('core/', 'pages/');
+	private $autoloadpath = array('core/', 'core/page/');
 
 	/**
 	 * Overriding featuring name

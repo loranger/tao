@@ -14,8 +14,8 @@
 	require_once(TAO_PATH.'core/CodeImporter.php');
 
 	require_once(TAO_PATH.'core/Page.php');
-	require_once(TAO_PATH.'core/core.page/PageHtml.php');
-	require_once(TAO_PATH.'core/core.page/PageXhtml.php');
+	require_once(TAO_PATH.'core/page/PageHtml.php');
+	require_once(TAO_PATH.'core/page/PageXhtml.php');
 
 	require_once(TAO_PATH.'core/Functions.php');
 	require_once(TAO_PATH.'core/Tao.php');
