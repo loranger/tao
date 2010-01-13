@@ -15,10 +15,10 @@ class PageHtml extends Page
 	 * @var array
 	 **/
 	protected $schema = array('variant'=>'transitional','version'=>array('4.01'));
-	
+
 	/**
 	 * PageHtml constructor
-	 * 
+	 *
 	 * @example PageHtml new PageHtml('html 4.01 strict', 'iso8859-1', 'fr');
 	 * @example Page Page('html 4.01 strict', 'iso8859-1', 'fr');
 	 *
@@ -29,17 +29,17 @@ class PageHtml extends Page
 	 **/
 	function __construct($version = '4.01', $charset = 'utf-8', $language = false)
 	{
-		
+
 		$args = func_get_args();
-		
+
 		$public_id = null;
 		$doctype_uri = null;
-		
+
 		preg_match('/^([0-9.]+)( [a-z]+)?$/', strtolower(trim($version)), $parts);
-		
+
 		if(count($parts))
 		{
-			
+
 			$public_id = '-//W3C//DTD HTML';
 			foreach ($parts as $key => $value) {
 				switch($key)
@@ -59,7 +59,7 @@ class PageHtml extends Page
 			}
 			$public_id .= ' '.ucfirst($this->schema['variant']);
 			$public_id .= '//EN';
-		
+
 			if($this->schema['version'][0] == 4)
 			{
 				if(array_key_exists('variant', $this->schema))
@@ -84,7 +84,7 @@ class PageHtml extends Page
 		}
 
 		parent::__construct('html', $charset, $public_id, $doctype_uri);
-		
+
 		if($charset)
 		{
 			$meta = self::$dom->createElement('meta');
@@ -92,15 +92,15 @@ class PageHtml extends Page
 			$meta->setAttribute('content', 'text/html; charset='.strtoupper($charset));
 			self::$head->getElement()->appendChild($meta);
 		}
-		
+
 		if($language)
 		{
 			self::$root->setAttribute('lang', $language);
 		}
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Rendering method (called by Document)
 	 *
@@ -110,7 +110,7 @@ class PageHtml extends Page
 	{
 		return self::$dom->saveHTML();
 	}
-	
+
 }
 
 ?>

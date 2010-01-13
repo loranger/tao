@@ -8,17 +8,17 @@
  **/
 class PageXhtml extends Page
 {
-	
+
 	/**
 	 * Current xhtml document schema
 	 *
 	 * @var array
 	 **/
 	protected $schema = array('variant'=>'transitional','version'=>array('1.0'));
-		
+
 	/**
 	 * PageXhtml constructor
-	 * 
+	 *
 	 * @example PageXhtml new PageXhtml('1 strict', 'utf-8', 'fr');
 	 * @example Page Page('xhtml');
 	 *
@@ -32,12 +32,12 @@ class PageXhtml extends Page
 		$public_id = null;
 		$doctype_uri = null;
 		$namespace_uri = null;
-		
+
 		preg_match('/^([0-9.]+)( [a-z]+)?$/', strtolower(trim($version)), $parts);
-		
+
 		if(count($parts))
 		{
-			
+
 			$public_id = '-//W3C//DTD XHTML';
 			foreach ($parts as $key => $value) {
 				switch($key)
@@ -57,7 +57,7 @@ class PageXhtml extends Page
 			}
 			$public_id .= ' '.ucfirst($this->schema['variant']);
 			$public_id .= '//EN';
-		
+
 			$doctype_uri = sprintf('http://www.w3.org/TR/%s/DTD/%s%s.dtd',
 									'xhtml'.$this->schema['version'][0],
 									'xhtml'.implode('', $this->schema['version']),
@@ -68,15 +68,15 @@ class PageXhtml extends Page
 		}
 
 		parent::__construct('html', $charset, $public_id, $doctype_uri, $namespace_uri);
-		
+
 		if($language)
 		{
 			self::$root->setAttribute('xml:lang', $language);
 		}
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Rendering method (called by Document)
 	 *
@@ -93,7 +93,7 @@ class PageXhtml extends Page
 			return self::$dom->saveHTML();
 		}
 	}
-	
+
 }
 
 ?>

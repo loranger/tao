@@ -6,6 +6,9 @@ Page('xhtml');
 
 Page()->setTitle('Tag As Object - Demo');
 
+Page()->addCss('static/css/dummy.css');
+Page()->addScriptSrc('http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js', 'top');
+
 Page()->addMeta('keywords', 'asp... no kidding, php5');
 Page()->addHTTPMeta('expires', 'Sat, 01 Dec 2001 00:00:00 GMT');
 Page()->setBase('./');
@@ -33,7 +36,7 @@ tao('#myTitle')
 $second_link = tao('<a />')->setAttribute('href', 'http://www.php.net')->addContent('PHP');
 
 tao('<a />')
-	->setAttribute('href', 'http://www.tagasobject.net')
+	->setAttribute('href', 'http://github.com/loranger/tao')
 	->addContent('tao was here')
 	->addClass('test')
 	->addTo( Page() );

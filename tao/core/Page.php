@@ -15,21 +15,42 @@ class Page extends Document
 	 * @var array
 	 **/
 	protected $schema = array('version'=>array('1.0'));
-	
+
 	/**
 	 * Current page head
 	 *
 	 * @var object
 	 **/
 	static $head;
-	
+
 	/**
 	 * Current page body
 	 *
 	 * @var object
 	 **/
 	static $body;
-	
+
+	/**
+	 * Used scripts src
+	 *
+	 * @var array
+	 **/
+	private $scripts = array();
+
+	/**
+	 * Script elements to add at the bottom of the page
+	 *
+	 * @var array
+	 **/
+	private $bottomScripts = array();
+
+	/**
+	 * Used css src
+	 *
+	 * @var array
+	 **/
+	private $css = array();
+
 	function __construct($name = 'xml', $charset = 'utf-8', $public_id = null, $doctype_uri = null, $namespace_uri = null)
 	{
 		parent::__construct($name, $charset, $public_id, $doctype_uri, $namespace_uri);
@@ -39,10 +60,10 @@ class Page extends Document
 
 		self::$body = new Element('body');
 		self::$root->appendChild(self::$body->getElement());
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Set the title of the current page or replace it
 	 *
@@ -63,7 +84,7 @@ class Page extends Document
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Set the base uri of the current page or replace it
 	 *
@@ -80,7 +101,7 @@ class Page extends Document
 			self::$head->addContent($base);
 		}
 		$base->setAttribute('href', $uri);
-		
+
 		if($target)
 		{
 			$base->setAttribute('target', $target);
@@ -89,10 +110,10 @@ class Page extends Document
 		{
 			$base->removeAttribute('target');
 		}
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Add a meta tag to the current page or replace an existing one
 	 *
@@ -113,7 +134,7 @@ class Page extends Document
 		$meta->setAttribute('content', $content);
 		return $this;
 	}
-	
+
 	/**
 	 * Add a http-equiv meta tag to the current page or replace an existing one
 	 *
@@ -128,7 +149,29 @@ class Page extends Document
 	}
 
 	/**
-	 * Add style definitions to a specified style tag (or create it if not exists)
+	 * Add a css link to the current Page
+	 *
+	 * @return object $this
+	 * @param string url of the css
+	 **/
+	function addCss($url)
+	{
+		$url = trim($url);
+		if( !in_array($url, $this->css) )
+		{
+			array_push($this->css, $url);
+
+			$css = new Element('link');
+			$css->setAttribute('rel', 'stylesheet');
+			$css->setAttribute('type', 'text/css');
+			$css->setAttribute('href', $url);
+			self::$head->addContent($css->getElement());
+		}
+		return $this;
+	}
+
+	/**
+	 * Add style definitions for a specified style tag (or create it if not exists)
 	 *
 	 * @return object $this
 	 * @param string style definition
@@ -154,16 +197,52 @@ class Page extends Document
 		}
 		return $this;
 	}
-	
+
+	/**
+	 * Add a javascript src to the current Page
+	 *
+	 * @return object $this
+	 * @param string url of the script
+	 * @param string position of the script definition (top, head, bottom, body, false)
+	 **/
+	function addScriptSrc($url, $position = 'bottom')
+	{
+		$url = trim($url);
+		if( !in_array($url, $this->scripts) )
+		{
+			array_push($this->scripts, $url);
+
+			$script = new Element('script');
+			$script->setAttribute('type', 'text/javascript');
+			$script->setAttribute('src', $url);
+
+			switch( $position )
+			{
+				case 'top':
+				case 'head':
+					self::$head->addContent($script->getElement());
+					break;
+				case 'bottom':
+				case 'body':
+					array_push($this->bottomScripts, $script);
+					break;
+				default:
+					$this->addContent($script);
+					break;
+			}
+		}
+		return $this;
+	}
+
 	/**
 	 * Add a content to the current Page
 	 *
 	 * @return Page
 	 * @param mixed (string, array, Elements, Element or DOMElement) Exception will be thrown if Page cannot use the $content
-	 **/	
+	 **/
 	function addContent($content)
 	{
-		
+
 		if(is_object($content))
 		{
 			if(is_a($content, 'Element'))
@@ -175,7 +254,7 @@ class Page extends Document
 				$content = iterator_to_array($content);
 			}
 		}
-		
+
 		if(is_array($content))
 		{
 			foreach($content as $item)
@@ -184,7 +263,7 @@ class Page extends Document
 			}
 			return $this;
 		}
-		
+
 		if(is_string($content))
 		{
 			$content = self::$dom->createTextNode($content);
@@ -201,7 +280,7 @@ class Page extends Document
 
 		return $this;
 	}
-	
+
 	/**
 	 * Page destructor
 	 *
@@ -209,9 +288,13 @@ class Page extends Document
 	 **/
 	function __destruct()
 	{
+		foreach( $this->bottomScripts as $script )
+		{
+			$this->addContent($script);
+		}
 		echo $this;
 	}
-	
+
 }
 
 /**
@@ -242,7 +325,7 @@ function Page($type = 'xhtml', $charset = null, $locale = null)
 				array_shift($args);
 			}
 		}
-		
+
 		$className = 'Page'.ucfirst($type);
 		$reflectionObj = new ReflectionClass($className);
 		$page = $reflectionObj->newInstanceArgs($args);
