@@ -16,7 +16,7 @@ class PageDummy extends PageXhtml
 	function render()
 	{
 		$footer = tao('<div />')->setId('footer');
-		$footer->addContent('This is the footer rendered with every PageDummy');
+		$footer->addContent('This is the footer rendered with every ' . get_class($this));
 		$this->addContent($footer);
 
 		return parent::render();
