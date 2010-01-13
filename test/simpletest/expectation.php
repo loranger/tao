@@ -40,6 +40,7 @@ class SimpleExpectation {
      *    @access public
      *    @abstract
      */
+
     function test($compare) {
     }
 

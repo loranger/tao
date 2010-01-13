@@ -15,7 +15,7 @@ class TestPageXhtml extends UnitDocumentTestCase {
 		
 		$this->assertNoErrors('Empty default PageXhtml created');
 		$this->assertNbLinesEqual(8);
-		$this->assertWantedPattern('/<!DOCTYPE HTML PUBLIC "-\/\/W3C\/\/DTD XHTML 1.0 Transitional\/\/EN" "http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd">/',
+		$this->assertWantedPattern('/<!DOCTYPE HTML PUBLIC "-\/\/W3C\/\/DTD XHTML 1.0 Transitional\/\/EN" "http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-transitional.dtd">/imU',
 									$this->getOutput(),
 									'XHTML 1.0 Transitional DocType found');
 		$this->assertWantedPattern('/<html xmlns="http:\/\/www.w3.org\/1999\/xhtml">/', $this->getOutput(), 'Correct html root node found');
@@ -32,7 +32,7 @@ class TestPageXhtml extends UnitDocumentTestCase {
 		
 		$this->assertNoErrors('Empty PageXhtml 1.0 Strict created');
 		$this->assertNbLinesEqual(8);
-		$this->assertWantedPattern('/<!DOCTYPE HTML PUBLIC "-\/\/W3C\/\/DTD XHTML 1 Strict\/\/EN" "http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-strict.dtd">/',
+		$this->assertWantedPattern('/<!DOCTYPE HTML PUBLIC "-\/\/W3C\/\/DTD XHTML 1 Strict\/\/EN" "http:\/\/www.w3.org\/TR\/xhtml1\/DTD\/xhtml1-strict.dtd">/imU',
 									$this->getOutput(),
 									'XHTML 1.0 Transitional DocType found');
 		$this->assertWantedPattern('/<html xmlns="http:\/\/www.w3.org\/1999\/xhtml" xml:lang="fr" lang="fr">/', $this->getOutput(), 'Correct html root node found');

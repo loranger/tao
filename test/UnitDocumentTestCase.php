@@ -1,11 +1,13 @@
 <?php
 
+error_reporting(0);
+
 require_once(dirname(__FILE__).'/simpletest/autorun.php');
 require_once(dirname(__FILE__).'/../tao/require.php');
 TaoExceptions::restore();
 
 class UnitDocumentTestCase extends UnitTestCase {
-	
+
 	protected $document;
 	private $output = false;
 
@@ -19,12 +21,12 @@ class UnitDocumentTestCase extends UnitTestCase {
 		ob_end_clean();
 		$this->resetOutput();
 	}
-	
+
 	function resetOutput()
 	{
 		$this->output = false;
 	}
-	
+
 	protected function getOutput()
 	{
 		if( !$this->output )
@@ -36,14 +38,14 @@ class UnitDocumentTestCase extends UnitTestCase {
 		}
 		return $this->output;
 	}
-	
+
 	protected function getDebug()
 	{
 		echo '<pre>';
 		echo htmlentities($this->getOutput());
 		echo '</pre>';
 	}
-	
+
 	function assertNbLinesEqual($number)
 	{
 		$this->assertEqual( count(explode("\n", $this->getOutput())), $number, $number.' lines found');

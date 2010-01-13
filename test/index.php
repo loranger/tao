@@ -1,5 +1,7 @@
 <?php
 
+error_reporting(0);
+
 	if (! defined('SIMPLE_TEST')) {
 		define('SIMPLE_TEST', 'simpletest/');
 	}
@@ -13,7 +15,7 @@
 		require_once($test);
 	}
 
-	$test = &new GroupTest('All tests');
+	$test = new GroupTest('All tests');
 	foreach($tests as $file)
 	{
 		$filename = substr($file, strrpos($file, '/')+1);

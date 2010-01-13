@@ -12,10 +12,10 @@ class TestPageHtml extends UnitDocumentTestCase {
 	function testCreatingNewEmptyPageHtml()
 	{
 		$this->document = new PageHtml();
-		
+
 		$this->assertNoErrors('Empty default PageHtml created');
 		$this->assertNbLinesEqual(5);
-		$this->assertWantedPattern('/<!DOCTYPE HTML PUBLIC "-\/\/W3C\/\/DTD HTML 4.01 Transitional\/\/EN" "http:\/\/www.w3.org\/TR\/html4\/loose.dtd">/',
+		$this->assertWantedPattern('/<!DOCTYPE HTML PUBLIC "-\/\/W3C\/\/DTD HTML 4.01 Transitional\/\/EN" "http:\/\/www.w3.org\/TR\/html4\/loose.dtd">/imU',
 									$this->getOutput(),
 									'HTML 4.01 Transitional DocType found');
 		$this->assertWantedPattern('/<html>/', $this->getOutput(), 'html root node found');
@@ -25,14 +25,14 @@ class TestPageHtml extends UnitDocumentTestCase {
 									'Correct meta node found');
 		$this->assertWantedPattern('/<body>/', $this->getOutput(), 'body node found');
 	}
-	
+
 	function testCreatingNewEmptyPageHtml4()
 	{
 		$this->document = new PageHtml('4.01', 'iso8859-1', 'fr');
-		
+
 		$this->assertNoErrors('Empty PageHtml4 created');
 		$this->assertNbLinesEqual(5);
-		$this->assertWantedPattern('/<!DOCTYPE HTML PUBLIC "-\/\/W3C\/\/DTD HTML 4.01 Transitional\/\/EN" "http:\/\/www.w3.org\/TR\/html4\/loose.dtd">/',
+		$this->assertWantedPattern('/<!DOCTYPE HTML PUBLIC "-\/\/W3C\/\/DTD HTML 4.01 Transitional\/\/EN" "http:\/\/www.w3.org\/TR\/html4\/loose.dtd">/imU',
 									$this->getOutput(),
 									'HTML 4.01 Transitional DocType found');
 		$this->assertWantedPattern('/<html lang="fr">/', $this->getOutput(), 'html root node found');
@@ -42,17 +42,17 @@ class TestPageHtml extends UnitDocumentTestCase {
 									'Correct meta node found');
 		$this->assertWantedPattern('/<body>/', $this->getOutput(), 'body node found');
 	}
-	
+
 	function testCreatingNewPageHtml()
 	{
 		$this->document = new PageHtml('4.01', 'iso8859-1', 'fr');
-		
+
 		$this->document->setTitle('my default title');
 		$this->document->addMeta('indentifier-url', 'http://www.site.com');
 		$this->document->addMeta('keywords', 'asp');
 		$this->document->addHTTPMeta('expires', 'Sat, 01 Dec 2001 00:00:00 GMT');
 		$this->document->setBase('./');
-		
+
 		$this->assertNoErrors('Empty PageHtml4 created');
 		$this->assertNbLinesEqual(12);
 		$this->assertWantedPattern('/<title>my default title<\/title>/', $this->getOutput(), 'Correct title node found');
