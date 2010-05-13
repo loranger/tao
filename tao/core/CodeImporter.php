@@ -8,14 +8,14 @@
  **/
 class CodeImporter extends Element
 {
-	
+
 	/**
 	 * Fragment imported
 	 *
 	 * @var DocumentFragment
 	 **/
 	private $fragment;
-	
+
 	/**
 	 * CodeImporter constructor
 	 *
@@ -26,9 +26,13 @@ class CodeImporter extends Element
 	{
 		$this->checkDOM();
 		$this->fragment = Document::$dom->createDocumentFragment();
-		$this->fragment->appendXML( html_entity_decode($code, ENT_COMPAT, Document::$charset) );
+		if( Document::$charset )
+		{
+			$code = html_entity_decode($code, ENT_COMPAT, Document::$charset);
+		}
+		$this->fragment->appendXML( $code );
 		parent::__construct($this->fragment);
-		
+
 		if($this->element->childNodes->length == 1)
 		{
 			$this->element = $this->element->firstChild;
