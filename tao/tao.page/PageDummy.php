@@ -10,7 +10,7 @@ class PageDummy extends PageXhtml
 
 		$this->setTitle( 'Dummy page' );
 		$this->addCss('static/css/dummy.css');
-		$this->addScriptSrc('http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js', 'top');
+		$this->addScriptSrc('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js', 'top');
 	}
 
 	function render()
