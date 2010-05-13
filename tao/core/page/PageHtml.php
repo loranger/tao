@@ -27,7 +27,7 @@ class PageHtml extends Page
 	 * @param string $charset
 	 * @param string $language
 	 **/
-	function __construct($version = '4.01', $charset = 'utf-8', $language = false)
+	function __construct($version = '4.01', $charset = false, $language = false)
 	{
 
 		$args = func_get_args();

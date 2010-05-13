@@ -54,18 +54,21 @@ class Document
 	 * @param string $doctype_uri
 	 * @param string $namespace_uri
 	 **/
-	function __construct($name = 'xml', $charset = 'utf-8', $public_id = null, $doctype_uri = null, $namespace_uri = null)
+	function __construct($name = 'xml', $charset = null, $public_id = null, $doctype_uri = null, $namespace_uri = null)
 	{
 
 		self::$systemName = strtolower($name);
-		self::$charset = strtolower($charset);
 
 		$domImplementation = new DOMImplementation;
 
 		$dtd = $domImplementation->createDocumentType(strtolower(self::$systemName), $public_id, $doctype_uri);
 
 		self::$dom = $domImplementation->createDocument($namespace_uri, self::$systemName, $dtd);
-		self::$dom->encoding = strtoupper(self::$charset);
+		if( $charset )
+		{
+			self::$charset = strtolower($charset);
+			self::$dom->encoding = strtoupper(self::$charset);
+		}
 		self::$dom->preserveWhiteSpace = false;
 		self::$dom->formatOutput = true;
 		self::$dom->validateOnParse = true;

@@ -20,9 +20,9 @@ class TestPageHtml extends UnitDocumentTestCase {
 									'HTML 4.01 Transitional DocType found');
 		$this->assertWantedPattern('/<html>/', $this->getOutput(), 'html root node found');
 		$this->assertWantedPattern('/<head>/', $this->getOutput(), 'head node found');
-		$this->assertWantedPattern('/<meta http-equiv="Content-Type" content="text\/html; charset=UTF-8">/',
-									$this->getOutput(),
-									'Correct meta node found');
+		// $this->assertWantedPattern('/<meta http-equiv="Content-Type" content="text\/html; charset=UTF-8">/',
+		// 							$this->getOutput(),
+		// 							'Correct meta node found');
 		$this->assertWantedPattern('/<body>/', $this->getOutput(), 'body node found');
 	}
 
@@ -40,6 +40,23 @@ class TestPageHtml extends UnitDocumentTestCase {
 		$this->assertWantedPattern('/<meta http-equiv="Content-Type" content="text\/html; charset=ISO8859-1">/',
 									$this->getOutput(),
 									'Correct meta node found');
+		$this->assertWantedPattern('/<body>/', $this->getOutput(), 'body node found');
+	}
+
+	function testCreatingNewEmptyPageHtml5()
+	{
+		$this->document = new PageHtml(5);
+
+		$this->assertNoErrors('Empty default PageHtml created');
+		$this->assertNbLinesEqual(5);
+		$this->assertWantedPattern('/<!DOCTYPE html>/imU',
+									$this->getOutput(),
+									'HTML 5 DocType found');
+		$this->assertWantedPattern('/<html>/', $this->getOutput(), 'html root node found');
+		$this->assertWantedPattern('/<head>/', $this->getOutput(), 'head node found');
+		$this->assertNoUnwantedPattern('/<meta http-equiv="Content-Type" content="text\/html; charset=UTF-8">/',
+									$this->getOutput(),
+									'Meta node not found');
 		$this->assertWantedPattern('/<body>/', $this->getOutput(), 'body node found');
 	}
 
