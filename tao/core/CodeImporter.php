@@ -25,18 +25,27 @@ class CodeImporter extends Element
 	function __construct($code)
 	{
 		$this->checkDOM();
-		$this->fragment = Document::$dom->createDocumentFragment();
-		if( Document::$charset )
-		{
-			$code = html_entity_decode($code, ENT_COMPAT, Document::$charset);
-		}
-		$this->fragment->appendXML( $code );
-		parent::__construct($this->fragment);
 
-		if($this->element->childNodes->length == 1)
+		if( preg_match('/<((\S+).*)>/', $code, $match) )
 		{
-			$this->element = $this->element->firstChild;
+			$this->fragment = Document::$dom->createDocumentFragment();
+			if( Document::$charset )
+			{
+				$code = html_entity_decode($code, ENT_COMPAT, Document::$charset);
+			}
+			$this->fragment->appendXML( $code );
+			parent::__construct($this->fragment);
+
+			if($this->element->childNodes->length == 1)
+			{
+				$this->element = $this->element->firstChild;
+			}
 		}
+		else
+		{
+			$this->element = Document::$dom->createTextNode($code);
+		}
+
 	}
 
 }

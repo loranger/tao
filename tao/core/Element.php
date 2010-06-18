@@ -16,7 +16,7 @@ class UnitElement
 	 * @var DOMElement
 	 **/
 	protected $element = false;
-		
+
 	/**
 	 * Element constructor
 	 *
@@ -51,7 +51,7 @@ class UnitElement
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Check if current Element has its element node
 	 *
@@ -78,13 +78,13 @@ class UnitElement
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Check if DOM exists and create it if needed
 	 *
 	 * @return object $this
 	 * @author Laurent Goussard
-	 * @param string 
+	 * @param string
 	 **/
 	protected function checkDOM()
 	{
@@ -107,7 +107,7 @@ class UnitElement
 		$this->element = Document::$dom->createElement($tag);
 		return $this;
 	}
-	
+
 	/**
 	 * Create a new Element from a DOMElement
 	 *
@@ -119,7 +119,7 @@ class UnitElement
 		$this->element = $object;
 		return $this;
 	}
-	
+
 	/**
 	 * Check if current element has attribute
 	 *
@@ -130,7 +130,7 @@ class UnitElement
 	{
 		return $this->getElement()->hasAttribute($name);
 	}
-	
+
 	/**
 	 * Return the attribute value of the current Element
 	 *
@@ -141,7 +141,7 @@ class UnitElement
 	{
 		return $this->getElement()->getAttribute($name);
 	}
-	
+
 	/**
 	 * Define an attribute to the current element
 	 *
@@ -176,7 +176,7 @@ class UnitElement
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Add (or create) an attribute to the current element
 	 *
@@ -189,7 +189,7 @@ class UnitElement
 	function addAttribute($name, $value, $delimiter = ' ', $trailing = false)
 	{
 		$args = func_get_args();
-		
+
 		if(!$this->iterate(__FUNCTION__, $args))
 		{
 			if($this->getElement()->hasAttribute(trim($name)))
@@ -243,7 +243,7 @@ class UnitElement
 	{
 		return $this->setContent($content, true);
 	}
-	
+
 	/**
 	 * Set a content to the current element
 	 *
@@ -258,6 +258,12 @@ class UnitElement
 		{
 			if(is_bool($content)){
 			    return;
+			}
+
+
+			if(is_string($content) || is_double($content) || is_integer($content))
+			{
+				$content = new CodeImporter($content);
 			}
 
 			if(is_object($content))
@@ -281,11 +287,6 @@ class UnitElement
 				return $this;
 			}
 
-			if(is_string($content) || is_double($content) || is_integer($content))
-			{
-			    $content = Document::$dom->createTextNode($content);
-			}
-			
 			try
 			{
 				if($this->getElement()->hasChildNodes() && !$append)
@@ -304,7 +305,7 @@ class UnitElement
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Add current element as content of an other
 	 *
@@ -319,7 +320,7 @@ class UnitElement
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Find a children element based on a css expression
 	 *
@@ -330,7 +331,7 @@ class UnitElement
 	{
 		return Document::find($expression, $this->getElement());
 	}
-	
+
 	/**
 	 * Export current element as a string
 	 *
@@ -340,7 +341,7 @@ class UnitElement
 	{
 		return (!$this->iterate(__FUNCTION__)) ? Document::$dom->saveXML($this->getElement()) : '';
 	}
-	
+
 	/**
 	 * Remove current element from DOM
 	 *
@@ -370,10 +371,10 @@ class UnitElement
  **/
 class Element extends UnitElement
 {
-	
+
 	protected $classDelimiter = ' ';
 	protected $stylesDelimiter = ';';
-	
+
 	/**
 	 * Element constructor
 	 *
@@ -384,7 +385,7 @@ class Element extends UnitElement
 	{
 		return parent::__construct($expression);
 	}
-	
+
 	/**
 	 * Define an id attribute to the current element
 	 *
@@ -397,7 +398,7 @@ class Element extends UnitElement
 		$this->setAttribute('id', trim($id));
 		return $this;
 	}
-	
+
 	/**
 	 * Define a reading orientation attribute to the current element
 	 *
@@ -413,7 +414,7 @@ class Element extends UnitElement
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Define a language attribute to the current element
 	 *
@@ -429,7 +430,7 @@ class Element extends UnitElement
 		}
 		return $this;
 	}
-	
+
 	/**
 	 * Define a title attribute to the current element
 	 *
@@ -453,7 +454,7 @@ class Element extends UnitElement
 		$this->setAttribute('class', $class, $this->classDelimiter);
 		return $this;
 	}
-	
+
 	/**
 	 * Add a new class attribute value to the existing one for the current element
 	 *
@@ -465,7 +466,7 @@ class Element extends UnitElement
 		$this->addAttribute('class', $class, $this->classDelimiter);
 		return $this;
 	}
-	
+
 	/**
 	 * Remove a specific classname from the current element
 	 *
@@ -492,7 +493,7 @@ class Element extends UnitElement
 		$this->setClass($current_value);
 		return $this;
 	}
-	
+
 	/**
 	 * Parse and prepare styles to be added or setted
 	 *
@@ -510,7 +511,7 @@ class Element extends UnitElement
 			}
 			$styles = explode($this->stylesDelimiter, $styles);
 		}
-		
+
 		if( !is_numeric(key($styles)) )
 		{
 			$merge = array();
@@ -523,10 +524,10 @@ class Element extends UnitElement
 			}
 			$styles = $merge;
 		}
-		
+
 		return $styles;
 	}
-	
+
 	/**
 	 * Define a style attribute to the current element
 	 *
@@ -543,7 +544,7 @@ class Element extends UnitElement
 		$this->setAttribute('style', $this->prepareStyles($styles), $this->stylesDelimiter, true);
 		return $this;
 	}
-	
+
 	/**
 	 * Add a new style attribute value to the existing one for the current element
 	 *
@@ -560,7 +561,7 @@ class Element extends UnitElement
 		$this->addAttribute('style', $this->prepareStyles($styles), $this->stylesDelimiter, true);
 		return $this;
 	}
-	
+
 	/**
 	 * Remove the given style
 	 * Will remove every style beginning with the given style name given
@@ -604,42 +605,42 @@ class Elements extends Element implements Iterator
 {
 	private $key = 0;
 	private $array = array();
-	
+
 	function __construct($array)
 	{
 		$this->array = $array;
 	}
-	
+
 	function current()
 	{
 		return $this->array[$this->key];
 	}
-	
+
 	function key()
 	{
 		return $this->key;
 	}
-	
+
 	function next()
 	{
 		++$this->key;
 	}
-	
+
 	function rewind()
 	{
 		$this->key = 0;
 	}
-	
+
 	function valid()
 	{
 		return isset($this->array[$this->key]);
 	}
-	
+
 	function count()
 	{
 		return count($this->array);
 	}
-	
+
 	function __toString()
 	{
 		$out = '';

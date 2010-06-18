@@ -19,7 +19,7 @@ function tao($expression)
 {
 	if( preg_match('/<((\S+).*)>/', $expression, $match) )
 	{
-		return new tao($expression);
+		return new CodeImporter($expression);
 	}
 	else
 	{
