@@ -15,7 +15,7 @@ class TestPageStyles extends UnitDocumentTestCase {
 
 	function testAddingXhtmlStyles()
 	{
-		$this->document = new PageXhtml('1 strict', 'utf-8', 'fr');
+		$this->document = new \tao\core\page\PageXhtml('1 strict', 'utf-8', 'fr');
 		
 $style = <<<CSS
 a {
@@ -37,7 +37,7 @@ CSS;
 	
 	function testAddingXhtmlMediaStyles()
 	{
-		$this->document = new PageXhtml('1 strict', 'utf-8', 'fr');
+		$this->document = new \tao\core\page\PageXhtml('1 strict', 'utf-8', 'fr');
 		
 $style = <<<CSS
 a {

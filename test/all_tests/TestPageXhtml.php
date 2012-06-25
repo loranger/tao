@@ -11,7 +11,7 @@ class TestPageXhtml extends UnitDocumentTestCase {
 
 	function testCreatingNewEmptyPageXhtml()
 	{
-		$this->document = new PageXhtml();
+		$this->document = new \tao\core\page\PageXhtml();
 		
 		$this->assertNoErrors('Empty default PageXhtml created');
 		$this->assertNbLinesEqual(8);
@@ -28,7 +28,7 @@ class TestPageXhtml extends UnitDocumentTestCase {
 	
 	function testCreatingNewEmptyPageXhtmlStrict()
 	{
-		$this->document = new PageXhtml('1 strict', 'utf-8', 'fr');
+		$this->document = new \tao\core\page\PageXhtml('1 strict', 'utf-8', 'fr');
 		
 		$this->assertNoErrors('Empty PageXhtml 1.0 Strict created');
 		$this->assertNbLinesEqual(8);
@@ -45,7 +45,7 @@ class TestPageXhtml extends UnitDocumentTestCase {
 	
 	function testCreatingNewPageXhtmlStrict()
 	{
-		$this->document = new PageXhtml('1 strict', 'utf-8', 'fr');
+		$this->document = new \tao\core\page\PageXhtml('1 strict', 'utf-8', 'fr');
 		
 		$this->document->setTitle('my default title');
 		$this->document->addMeta('indentifier-url', 'http://www.site.com');

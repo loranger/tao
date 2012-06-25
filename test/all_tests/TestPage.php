@@ -11,7 +11,7 @@ class TestPage extends UnitDocumentTestCase {
 
 	function testCreatingNewEmptyPage()
 	{
-		$this->document = new Page();
+		$this->document = new \tao\core\Page();
 
 		$this->assertNoErrors('Empty default Page created');
 		$this->assertNbLinesEqual(6);
@@ -23,7 +23,7 @@ class TestPage extends UnitDocumentTestCase {
 
 	function testCreatingNewDummyPage()
 	{
-		$this->document = new Page('html', 'utf-8', 'html');
+		$this->document = new \tao\core\Page('html', 'utf-8', 'html');
 
 		$this->assertNoErrors('Empty dummy Page created');
 		$this->assertNbLinesEqual(6);
@@ -35,7 +35,7 @@ class TestPage extends UnitDocumentTestCase {
 
 	function testCreatingNewXhtmlPage()
 	{
-		$this->document = new Page('html',
+		$this->document = new \tao\core\Page('html',
 									'utf-8',
 									'-//W3C//DTD XHTML 1.0 Transitional//EN',
 									'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd',
@@ -62,7 +62,7 @@ class TestPage extends UnitDocumentTestCase {
 
 	function testTitle()
 	{
-		$this->document = new Page('html', 'utf-8', 'html');
+		$this->document = new \tao\core\Page('html', 'utf-8', 'html');
 
 		$this->document->setTitle('Dummy title');
 		$this->document->setTitle('Real title');
@@ -73,7 +73,7 @@ class TestPage extends UnitDocumentTestCase {
 
 	function testMeta()
 	{
-		$this->document = new Page('html', 'utf-8', 'html');
+		$this->document = new \tao\core\Page('html', 'utf-8', 'html');
 
 		$this->document->addMeta('indentifier-url', 'http://www.site.com');
 		$this->document->addMeta('keywords', 'asp');

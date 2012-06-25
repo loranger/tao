@@ -11,9 +11,9 @@ class TestUniversalElement extends UnitDocumentTestCase {
 
 	function testManipulatingUniversalElement()
 	{
-		$this->document = new PageXhtml('1 strict', 'utf-8', 'fr');
+		$this->document = new \tao\core\page\PageXhtml('1 strict', 'utf-8', 'fr');
 		
-		$div = new Element('div');
+		$div = new \tao\core\Element('div');
 		$this->document->addContent( $div );
 		
 		$div->setId('myDiv');

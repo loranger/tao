@@ -11,9 +11,9 @@ class TestElement extends UnitDocumentTestCase {
 	
 	function testSingleElement()
 	{
-		$b = new Element('b');
+		$b = new \tao\core\Element('b');
 			$b->addContent('Bla ');
-			$em = new Element('em');
+			$em = new \tao\core\Element('em');
 				$em->addContent('emphase');
 			$b->addContent($em);
 			$b->addContent(' blabla');
@@ -29,16 +29,16 @@ class TestElement extends UnitDocumentTestCase {
 
 	function testManipulatingElement()
 	{
-		$this->document = new PageXhtml('1 strict', 'utf-8', 'fr');
+		$this->document = new \tao\core\page\PageXhtml('1 strict', 'utf-8', 'fr');
 		
-		$div = new Element('div');
+		$div = new \tao\core\Element('div');
 		$this->document->addContent( $div );
 
-		$b = new Element('b');
+		$b = new \tao\core\Element('b');
 		$div->addContent($b);
 		$b->addContent('Bold ');
 		
-		$em = new Element('em');
+		$em = new \tao\core\Element('em');
 		$em->addTo($b);
 		$em->addContent('emphase');
 

@@ -12,7 +12,7 @@ class TestElements extends UnitDocumentTestCase {
 	function testSingleElements()
 	{
 		$this->document = null;
-		$tao = new tao('div');
+		$tao = new \tao\core\tao('div');
 
 		$b = tao('<b />')->addContent('Bla 1');
 		$b2 = tao('<b />')->addContent('Bla 2');

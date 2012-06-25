@@ -11,15 +11,15 @@ class TestSelector extends UnitDocumentTestCase {
 	
 	function testSimpleSelector()
 	{
-		$this->document = new PageXhtml('1 strict', 'utf-8', 'fr');
+		$this->document = new \tao\core\page\PageXhtml('1 strict', 'utf-8', 'fr');
 		
-		$div = new Element('div');
+		$div = new \tao\core\Element('div');
 		$div->addTo($this->document);
 		
-		$div = new Element('div');
+		$div = new \tao\core\Element('div');
 		$div->setId('myDiv')->addTo($this->document);
 		
-		$child = new Element('div');
+		$child = new \tao\core\Element('div');
 		$child->setId('myChild')->addTo($div);
 		
 		foreach($this->document->find('div') as $element)

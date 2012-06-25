@@ -14,7 +14,7 @@ class TestShortcutPageScripts extends UnitDocumentTestCase {
 
 	function testCreatingNewEmptyPage()
 	{
-		$this->document = new PageXhtml();
+		$this->document = new \tao\core\page\PageXhtml();
 
 		$this->assertNoErrors('Empty xhtml Page created');
 	}

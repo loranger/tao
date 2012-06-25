@@ -4,7 +4,7 @@ error_reporting(0);
 
 require_once(dirname(__FILE__).'/simpletest/autorun.php');
 require_once(dirname(__FILE__).'/../tao/require.php');
-TaoExceptions::restore();
+\tao\core\TaoExceptions::restore();
 
 class UnitDocumentTestCase extends UnitTestCase {
 

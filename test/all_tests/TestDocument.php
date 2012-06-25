@@ -10,7 +10,7 @@ class TestDocument extends UnitDocumentTestCase {
 
 	function testCreatingNewEmptyDocument()
 	{
-		$this->document = new Document();
+		$this->document = new \tao\core\Document();
 
 		$this->assertNoErrors('Empty Document created');
 		$this->assertNbLinesEqual(3);
@@ -20,7 +20,7 @@ class TestDocument extends UnitDocumentTestCase {
 
 	function testCreatingNewAtomDocument()
 	{
-		$this->document = new Document('xml', 'utf-8', 'atom 2.0');
+		$this->document = new \tao\core\Document('xml', 'utf-8', 'atom 2.0');
 
 		$this->assertNoErrors('Empty Document created');
 		$this->assertNbLinesEqual(3);

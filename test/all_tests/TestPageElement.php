@@ -11,9 +11,9 @@ class TestPageElement extends UnitDocumentTestCase {
 
 	function testAddingSimpleElement()
 	{
-		$this->document = new PageXhtml('1 strict', 'utf-8', 'fr');
+		$this->document = new \tao\core\page\PageXhtml('1 strict', 'utf-8', 'fr');
 		
-		$this->document->addContent( new Element('hr') );
+		$this->document->addContent( new \tao\core\Element('hr') );
 		
 		$this->assertNoErrors('Xhtml Page created');
 		$this->assertNbLinesEqual(10);
@@ -22,9 +22,9 @@ class TestPageElement extends UnitDocumentTestCase {
 	
 	function testAddingRemovingSimpleElement()
 	{
-		$this->document = new PageXhtml('1 strict', 'utf-8', 'fr');
+		$this->document = new \tao\core\page\PageXhtml('1 strict', 'utf-8', 'fr');
 		
-		$div = new Element('div');
+		$div = new \tao\core\Element('div');
 		$this->document->addContent( $div );
 		$div->remove();
 		

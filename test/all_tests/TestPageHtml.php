@@ -11,7 +11,7 @@ class TestPageHtml extends UnitDocumentTestCase {
 
 	function testCreatingNewEmptyPageHtml()
 	{
-		$this->document = new PageHtml();
+		$this->document = new \tao\core\page\PageHtml();
 
 		$this->assertNoErrors('Empty default PageHtml created');
 		$this->assertNbLinesEqual(5);
@@ -28,7 +28,7 @@ class TestPageHtml extends UnitDocumentTestCase {
 
 	function testCreatingNewEmptyPageHtml4()
 	{
-		$this->document = new PageHtml('4.01', 'iso8859-1', 'fr');
+		$this->document = new \tao\core\page\PageHtml('4.01', 'iso8859-1', 'fr');
 
 		$this->assertNoErrors('Empty PageHtml4 created');
 		$this->assertNbLinesEqual(5);
@@ -45,7 +45,7 @@ class TestPageHtml extends UnitDocumentTestCase {
 
 	function testCreatingNewEmptyPageHtml5()
 	{
-		$this->document = new PageHtml(5);
+		$this->document = new \tao\core\page\PageHtml(5);
 
 		$this->assertNoErrors('Empty default PageHtml created');
 		$this->assertNbLinesEqual(5);
@@ -62,7 +62,7 @@ class TestPageHtml extends UnitDocumentTestCase {
 
 	function testCreatingNewPageHtml()
 	{
-		$this->document = new PageHtml('4.01', 'iso8859-1', 'fr');
+		$this->document = new \tao\core\page\PageHtml('4.01', 'iso8859-1', 'fr');
 
 		$this->document->setTitle('my default title');
 		$this->document->addMeta('indentifier-url', 'http://www.site.com');

@@ -11,7 +11,7 @@ class TestTaoSelector extends UnitDocumentTestCase {
 	
 	function testSimpleTaoSelector()
 	{
-		$this->document = new PageXhtml('1 strict', 'utf-8', 'fr');
+		$this->document = new \tao\core\page\PageXhtml('1 strict', 'utf-8', 'fr');
 		
 		$div = tao('<div/>')->addTo($this->document);
 		

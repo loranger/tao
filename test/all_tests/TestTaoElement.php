@@ -12,7 +12,7 @@ class TestTaoElement extends UnitDocumentTestCase {
 	function testSingleNewTaoElement()
 	{
 		$this->document = null;
-		$tao = new tao('b');
+		$tao = new \tao\core\tao('b');
 		$tao->addContent('Bla ');
 			
 		ob_start();
@@ -27,7 +27,7 @@ class TestTaoElement extends UnitDocumentTestCase {
 	function testSingleNewTaoTagElement()
 	{
 		$this->document = null;
-		$tao = new tao('<b />');
+		$tao = new \tao\core\tao('<b />');
 		$tao->addContent('Bla ');
 			
 		ob_start();
@@ -59,7 +59,7 @@ class TestTaoElement extends UnitDocumentTestCase {
 	
 	function testManipulatingTaoElements()
 	{
-		$this->document = new PageXhtml('1 strict', 'utf-8', 'fr');
+		$this->document = new \tao\core\page\PageXhtml('1 strict', 'utf-8', 'fr');
 		
 		$div = tao('<div />')->addTo($this->document);
 
