@@ -18,8 +18,10 @@
 
     require_once(TAO_PATH.'core/Functions.php');
     require_once(TAO_PATH.'core/Tao.php');
-	
+
 	require_once(TAO_PATH.'singletons.php');
+	// Instanciate mandatory classes (boostrap, kinda)
+	TaoSettings();
 	tao\core\TaoExceptions::handle();
 
     // Enable or disable autoload feature

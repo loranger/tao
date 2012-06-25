@@ -62,5 +62,3 @@ function TaoSettings()
 
     return $taoSettings;
 }
-// Auto-instanciate
-TaoSettings();
