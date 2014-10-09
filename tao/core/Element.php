@@ -270,7 +270,8 @@ class UnitElement
     {
         if ( is_a($this, 'Iterator') ) {
             $pack = array('method'=>$method, 'args'=>$args);
-            array_walk(iterator_to_array($this), 'iterate', $pack);
+            $array = iterator_to_array($this);
+            array_walk($array, 'iterate', $pack);
 
             return $this;
         }

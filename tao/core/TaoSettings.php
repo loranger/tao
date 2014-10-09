@@ -47,7 +47,7 @@ class TaoSettings
 
     public function __construct()
     {
-        foreach ($this->autoloadpath as &$path) {
+        foreach ($this->autoloadpath as $path) {
             $path = TAO_PATH.$path;
         }
 

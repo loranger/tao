@@ -87,7 +87,7 @@ class Document
      * @param string css expression
      * @param Element or DOMElement as relative context node
      **/
-    public function find($expression, $context = false)
+    public static function find($expression, $context = false)
     {
         $context = ($context) ? $context : self::$root;
         $xpath = new \DOMXPath(self::$dom);
